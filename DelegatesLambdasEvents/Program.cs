@@ -42,6 +42,8 @@ public class Program
         // the method "TalkingTest" has the same signature as the SpeakDelegate
         // so it performs all the heavy lifting under the covers and allows
         // you to simply assign a method to a delegate.
+        SpeakDelegate abc = test.TalkingTest;
+        abc("I'm new");
         me = test.TalkingTest;
 
         // A Multicast Delegate is a delegate that holds the references of more than one function. 
@@ -53,6 +55,9 @@ public class Program
         // Notice that all 3 methods that this deletate references are executed with one line of code.
         // Also notice that all 3 methods are called synchronously!
         me("We're speaking the same language");
+
+        // Example of passing a delegate as a parameter to a method
+        ILikeDelegates(me, "All my delegates should say this");
 
         // We can remove method references from the delegate to have as few or as many
         // references in the delegate that we want.
@@ -190,6 +195,13 @@ public class Program
 
         FilmCritic.DemonstrateDeferredExecution("Rambo", "First", new DateTime(2009, 1, 1));
 
+    }
+
+    static void ILikeDelegates(SpeakDelegate someDelegate, string whatToSay)
+    {
+        Console.WriteLine("\r\n\r\nI'm doing some work here");
+        someDelegate(whatToSay);
+        Console.WriteLine("Finished my work\r\n\r\n");
     }
 
     static void ImSpeakingNow(string SayThis)
