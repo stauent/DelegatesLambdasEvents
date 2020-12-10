@@ -209,6 +209,34 @@ public class Program
 
         FilmCritic.DemonstrateDeferredExecution("Rambo", "First", new DateTime(2009, 1, 1));
 
+
+
+        List<string> listOfNames = new List<string>()
+        {
+            "John Doe",
+            "Jane Doe",
+            "Jenna Doe",
+            "Joe Doe"
+        };
+
+        // Query syntax
+        IEnumerable<string> qNames = from name in listOfNames where name.Length <= 8 select name;
+
+        // Method syntax
+        var mNames = listOfNames.Where(name => name.Length <= 8);
+
+        // Representation of the query
+        Expression<Func<IEnumerable<string>, IEnumerable<string>>> lambda = (myList) => from name in myList where name.Length <= 8 select name;
+        lambda.DumpExpression();
+        Console.WriteLine($"{lambda}");
+
+        // Compile and Execute the query
+        var compiledLinq = lambda.Compile();
+        IEnumerable<string> expressionNames = compiledLinq(listOfNames);
+        foreach (string x in expressionNames)
+        {
+            Console.WriteLine($"{x}");
+        }
     }
 
     static void ILikeDelegates(SpeakDelegate someDelegate, string whatToSay)
