@@ -32,6 +32,16 @@ public class Program
         // This creates a reference to a method, which can be executed at any time.
         SpeakDelegate me = new SpeakDelegate(ImSpeakingNow);
         SpeakDelegate math = new SpeakDelegate(MathMethods.MathSpeaks);
+        Action<string,int> xxx = MathMethods.NewMethod;
+        xxx("hello",9);
+
+        Action<string, int[]> newAction = MathMethods.NewMethod2;
+        int[] myints = new int[]{9,8,7};
+        newAction("I an another action", myints);
+
+        Func<string, int, int> myFunc = MathMethods.myFunc;
+        myFunc += MathMethods.myFunc2;
+        int length = myFunc("Paul",60);
 
         // Now execute the method you're referencing using the delegate it's mapped to.
         me("What a sunny day");
@@ -58,6 +68,7 @@ public class Program
 
         // Example of passing a delegate as a parameter to a method
         ILikeDelegates(me, "All my delegates should say this");
+        ILikeDelegates(ImSpeakingNow, "All my delegates should say this");
 
         // We can remove method references from the delegate to have as few or as many
         // references in the delegate that we want.
@@ -122,6 +133,10 @@ public class Program
         me = (Something) => { Console.WriteLine($"Lambda says: {Something}"); };
         me("I am here!");
 
+        Func<int,int, int> ReturnSomething = ( x,  y) => { return x + y; };
+        int value = ReturnSomething(9, 8);
+        Console.WriteLine($"Value is {value}");
+
         // The signature of the method called is:
         // 		public static int Calculate(DoMathDelegate DoMath, int first, int second)
         //
@@ -130,7 +145,6 @@ public class Program
         //
         // The next 2 parameters are the values consumed by the DoMathDelegate
         Console.WriteLine($"Value is {MathMethods.Calculate((a, b) => a + b, 1, 2)} using lambda");
-        Console.WriteLine($"Value is {MathMethods.Calculate(test.AddThese, 1, 2)} using equivalent delegate");        
         Console.WriteLine($"Value is {MathMethods.Calculate((x, z) => x * z, 1, 2)}");
         Console.WriteLine($"Value is {MathMethods.Calculate((q, r) => q - r, 1, 2)}");
         Console.WriteLine($"Value is {MathMethods.Calculate((f, h) => f / h, 1, 2)}");
@@ -204,7 +218,8 @@ public class Program
         Console.WriteLine("Finished my work\r\n\r\n");
     }
 
-    static void ImSpeakingNow(string SayThis)
+
+static void ImSpeakingNow(string SayThis)
     {
         Console.WriteLine($"Main says: {SayThis}");
     }
@@ -360,7 +375,27 @@ public static class MathMethods
     {
         Console.WriteLine($"MathMethods says: {SayThat}");
     }
+    public static void NewMethod(string SayThat, int Age)
+    {
+        Console.WriteLine($"MathMethods says: {SayThat}, I am {Age} years old");
+    }
 
+    public static void NewMethod2(string SayThat, int[] Ages)
+    {
+        Console.WriteLine($"MathMethods says: {SayThat}");
+    }
+
+    public static int myFunc(string MyName, int age)
+    {
+        Console.WriteLine($"My age is {age}");
+        return (MyName.Length);
+    }
+
+    public static int myFunc2(string MyName, int age)
+    {
+        Console.WriteLine($"My func2 saying {age}");
+        return (800);
+    }
 }
 
 /// <summary>
